@@ -53,3 +53,11 @@ func (r *RedisHelper) SetNXDataExample(ctx context.Context, key string, merchant
 	}
 	return result, nil
 }
+
+func (r *RedisHelper) DeleteDataExample(ctx context.Context, key string) (err error) {
+	err = r.RedisCache.Del(ctx, key)
+	if err != nil {
+		return fmt.Errorf("failed to delete data example in Redis with err: %w", err)
+	}
+	return nil
+}

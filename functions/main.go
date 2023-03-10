@@ -37,11 +37,13 @@ func run(ctx context.Context, args map[string]interface{}) error {
 
 	testSetNXDataExample(ctx, s, cacheKeyFirst, dataExample)
 	testSetNXDataExample(ctx, s, cacheKeySecond, dataExample)
+
+	testDeleteDataExample(ctx, s, cacheKeyFirst)
 	return nil
 }
 
 func testSetDataExample(ctx context.Context, s service, cacheKey string, dataEx model.DataExample) {
-	if err := s.redisCache.SetDataExample(ctx, cacheKey, dataEx, time.Duration(time.Duration(60).Seconds())); err != nil {
+	if err := s.redisCache.SetDataExample(ctx, cacheKey, dataEx, time.Duration(60)*time.Second); err != nil {
 		panic(err)
 	}
 }
@@ -64,9 +66,17 @@ func testCheckExisted(ctx context.Context, s service, cacheKey string) {
 }
 
 func testSetNXDataExample(ctx context.Context, s service, cacheKey string, dataEx model.DataExample) {
-	resultSetNX, err := s.redisCache.SetNXDataExample(ctx, cacheKey, dataEx, time.Duration(time.Duration(60).Seconds()))
+	resultSetNX, err := s.redisCache.SetNXDataExample(ctx, cacheKey, dataEx, time.Duration(60)*time.Second)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("setnx %s has result: %v\n", cacheKey, resultSetNX)
+}
+
+func testDeleteDataExample(ctx context.Context, s service, cacheKey string) {
+	err := s.redisCache.DeleteDataExample(ctx, cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("delete %s successfully\n", cacheKey)
 }

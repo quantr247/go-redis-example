@@ -25,4 +25,5 @@ type DataExampleRedisCache interface {
 	GetDataExample(ctx context.Context, key string) (dataEx *model.DataExample, err error)
 	CheckDataExampleExisted(ctx context.Context, key string) (isExisted bool, err error)
 	SetNXDataExample(ctx context.Context, key string, dataEx model.DataExample, expiration time.Duration) (result bool, err error)
+	DeleteDataExample(ctx context.Context, key string) (err error)
 }
